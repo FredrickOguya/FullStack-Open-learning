@@ -7,15 +7,33 @@ const assert = require('node:assert')
 const Note = require('../models/note')
 const helper = require('../tests/test_helper')
 const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 
 const api = supertest(app)
 
-
+let token
 
 describe('when there is initially some notes saved', () => {
     beforeEach(async () => {
+      await User.deleteMany({})
       await Note.deleteMany({})
-      await Note.insertMany(helper.initialNotes)
+
+      const passwordHash = await bcrypt.hash('secret', 10)
+      const user = new User({ username: 'root', passwordHash })
+      const savedUser = await user.save()
+
+      const userForToken = {
+        username: savedUser.username,
+        id: savedUser._id
+      }
+
+      token = jwt.sign(userForToken, process.env.SECRET)
+
+      const noteObjects = helper.initialNotes.map(note =>
+        new Note({ ...note, user: savedUser._id })
+      )
+
+      await Promise.all(noteObjects.map(note => note.save()))
     })
     test('notes are returned as json', async () => {
     await api
@@ -46,7 +64,9 @@ describe('when there is initially some notes saved', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
     
-    assert.deepStrictEqual(resultNote.body, noteToView)
+    assert.deepStrictEqual(resultNote.body.content, noteToView.content)
+    assert.deepStrictEqual(resultNote.body.important, noteToView.important)
+    assert.deepStrictEqual(resultNote.body.id, noteToView.id)
     })
 
     test('fails with status code 404 if note does not exist', async () => {
@@ -71,6 +91,7 @@ describe('when there is initially some notes saved', () => {
 
       await api
         .post('/api/notes')
+        .set('Authorization', `Bearer ${token}`)
         .send(newNote)
         .expect(201)
         .expect('Content-Type', /application\/json/)
@@ -87,7 +108,7 @@ describe('when there is initially some notes saved', () => {
         important: true
       }
 
-      await api.post('/api/notes').send(newNote).expect(400)
+      await api.post('/api/notes').set('Authorization', `Bearer ${token}`).send(newNote).expect(400)
 
       const notesAtEnd = await helper.notesInDb()
 
@@ -100,7 +121,7 @@ describe('when there is initially some notes saved', () => {
       const notesAtStart = await helper.notesInDb()
       const noteToDelete = notesAtStart[0]
 
-      await api.delete(`/api/notes/${noteToDelete.id}`).expect(204)
+      await api.delete(`/api/notes/${noteToDelete.id}`).set('Authorization', `Bearer ${token}`).expect(204)
 
       const notesAtEnd = await helper.notesInDb()
 
