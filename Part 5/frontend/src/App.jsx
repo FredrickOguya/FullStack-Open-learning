@@ -10,7 +10,6 @@ import NoteForm from './components/NoteForm'
 
 const App = () => {
   const [notes, setNotes] = useState([])
-  const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('')
@@ -32,18 +31,19 @@ const App = () => {
     }
   }, [])
 
-  const addNote = event => {
-    event.preventDefault()
-    const noteObject = {
-      content: newNote,
-      important: Math.random() > 0.5
-    }
-
-    noteService.create(noteObject).then(returnedNote => {
+  const addNote = (noteObject) => {
+      noteService
+      .create(noteObject)
+      .then(returnedNote => {
       setNotes(notes.concat(returnedNote))
-      setNewNote('')
     })
   }
+
+  const noteForm = () => (
+    <Togglable buttonLabel='new note'>
+      <NoteForm createNote={addNote} />
+    </Togglable>
+  )
 
   const toggleImportanceOf = id => {
     const note = notes.find(n => n.id === id)
@@ -84,9 +84,6 @@ const App = () => {
     }
   }
 
-  const handleNoteChange = event => {
-    setNewNote(event.target.value)
-  }
 
   const notesToShow = showAll ? notes : notes.filter(note => note.important)
 
@@ -102,15 +99,6 @@ const App = () => {
     </Togglable>
   )
 
-  const noteForm = () => (
-    <Togglable buttonLabel="new note">
-      <NoteForm
-        onSubmit={addNote}
-        value={newNote}
-        handleChange={handleNoteChange}
-      />    
-    </Togglable>
-  )
 
   return (
     <div>
