@@ -1,7 +1,16 @@
 const { test, expect, describe, beforeEach } = require('@playwright/test')
 
 describe('Note app', () => {
-  beforeEach(async ({ page }) => {
+  beforeEach(async ({ page, request }) => {
+    await request.post('http://localhost:3001/api/testing/reset')
+    await request.post('http://localhost:3001/api/users', {
+      data: {
+        username: "Onynodifre",
+        name: "Fredericko Onyi",
+        password: "WsxfThm"
+      }
+    })
+
     await page.goto('http://localhost:5173')
   })
 
@@ -35,6 +44,19 @@ describe('Note app', () => {
       await page.getByRole('textbox').fill('a note created by playwright')
       await page.getByRole('button', { name: 'save' }).click()
       await expect(page.getByText('a note created by playwright').last()).toBeVisible()
+    })
+    
+    describe('and a note exists', () => {
+      beforeEach(async ({ page }) => {
+        await page.getByRole('button', { name: 'new note' }).click()
+        await page.getByRole('textbox').fill('another note by playwright')
+        await page.getByRole('button', { name: 'save' }).click()
+      })
+
+      test('importance can be changed', async ({ page }) => {
+        await page.getByRole('button', { name: 'make not important' }).click()
+        await expect(page.getByText('make important')).toBeVisible()
+      })
     })
   })
 })
