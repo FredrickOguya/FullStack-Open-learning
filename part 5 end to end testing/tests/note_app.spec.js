@@ -1,6 +1,21 @@
 const { test, expect, describe, beforeEach } = require('@playwright/test')
 
 describe('Note app', () => {
+
+  test('login fails with wrong password', async ({ page }) => {
+    await page.getByRole('button', { name: 'login' }).click()
+    await page.getByLabel('username').fill('Onynodifre')
+    await page.getByLabel('password').fill('wrong')
+
+    const errorDiv = page.locator('.error')
+    await page.getByRole('button', { name: 'login' }).click()
+
+    await expect(errorDiv).toContainText('wrong credentials')
+    await expect(errorDiv).toHaveCSS('border-style', 'solid')
+    await expect(errorDiv).toHaveCSS('color', 'rgb(255, 0, 0)')
+
+    await expect(page.getByText('Fredericko Onyi logged')).not.toBeVisible()
+  })
   beforeEach(async ({ page, request }) => {
     await request.post('http://localhost:3001/api/testing/reset')
     await request.post('http://localhost:3001/api/users', {
