@@ -1,5 +1,5 @@
 const { test, expect, describe, beforeEach } = require('@playwright/test')
-const { loginWith } = require('../../Part 5/backend/tests/helper')
+const { loginWith, createNote } = require('../../Part 5/backend/tests/helper')
 
 
 describe('Note app', () => {
@@ -50,17 +50,13 @@ describe('Note app', () => {
     })
 
     test('a new note can be created', async ({ page }) => {
-      await page.getByRole('button', { name: 'new note' }).click()
-      await page.getByRole('textbox').fill('a note created by playwright')
-      await page.getByRole('button', { name: 'save' }).click()
+      await createNote(page, 'a note created by playwright')
       await expect(page.getByText('a note created by playwright').last()).toBeVisible()
     })
     
     describe('and a note exists', () => {
       beforeEach(async ({ page }) => {
-        await page.getByRole('button', { name: 'new note' }).click()
-        await page.getByRole('textbox').fill('another note by playwright')
-        await page.getByRole('button', { name: 'save' }).click()
+        createNote(page, 'another note by playwright')
       })
 
       test('importance can be changed', async ({ page }) => {
@@ -70,4 +66,3 @@ describe('Note app', () => {
     })
   })
 })
-
