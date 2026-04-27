@@ -15,7 +15,7 @@ describe('Note app', () => {
       }
     })
 
-    await page.goto('http://localhost:5173')
+    await page.goto('/')
   })
 
   test('login fails with wrong password', async ({ page }) => {
@@ -45,7 +45,7 @@ describe('Note app', () => {
   describe('when logged in', () => {
 
     beforeEach(async ({ page }) => {
-      await page.goto('http://localhost:5173')
+      await page.goto('/')
       await loginWith(page, 'Onynodifre', 'WsxfThm')
     })
 
