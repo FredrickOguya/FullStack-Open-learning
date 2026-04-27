@@ -1,5 +1,4 @@
-const { test, expect, describe } = require('@playwright/test')
-const { beforeEach } = require('node:test')
+const { test, expect, describe, beforeEach } = require('@playwright/test')
 
 describe('Note app', () => {
   beforeEach(async ({ page }) => {
@@ -7,6 +6,7 @@ describe('Note app', () => {
   })
 
   test('front page can be opened', async ({ page }) => {
+
     const locator = page.getByText('Notes')
     await expect(locator).toBeVisible()
     await expect(page.getByText('Note app, Department of Computer Science, University of Helsinki 2025')).toBeVisible()
@@ -18,5 +18,24 @@ describe('Note app', () => {
     await page.getByRole('textbox').last().fill('WsxfThm')
     await page.getByRole('button', { name: 'login' }).click()
     await expect(page.getByText('Fredericko Onyi logged')).toBeVisible()
+  })
+})
+
+describe('when logged in', () => {
+  beforeEach(async ({ page }) => {
+    await page.goto('http://localhost:5173')
+  })
+  beforeEach(async ({ page }) => {
+    await page.getByRole('button', { name: 'login' }).click()
+    await page.getByRole('textbox').first().fill('Onynodifre')
+    await page.getByRole('textbox').last().fill('WsxfThm')
+    await page.getByRole('button', { name: 'login' }).click()
+  })
+
+  test('a new note can be created', async ({ page }) => {
+    await page.getByRole('button', { name: 'new note' }).click()
+    await page.getByRole('textbox').fill('a note created by playwright')
+    await page.getByRole('button', { name: 'save' }).click()
+    await expect(page.getByText('a note created by playwright')).toBeVisible()
   })
 })
