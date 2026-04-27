@@ -2,7 +2,7 @@ const { test, expect, describe, beforeEach } = require('@playwright/test')
 
 describe('Note app', () => {
 
-  test('login fails with wrong password', async ({ page }) => {
+  test.only('login fails with wrong password', async ({ page }) => {
     await page.getByRole('button', { name: 'login' }).click()
     await page.getByLabel('username').fill('Onynodifre')
     await page.getByLabel('password').fill('wrong')
