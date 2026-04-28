@@ -4,7 +4,6 @@ const { loginWith, createNote } = require('../../Part 5/backend/tests/helper')
 
 describe('Note app', () => {
 
-  
   beforeEach(async ({ page, request }) => {
     await request.post('http://localhost:3001/api/testing/reset')
     await request.post('http://localhost:3001/api/users', {
@@ -64,5 +63,20 @@ describe('Note app', () => {
         await expect(page.getByText('make important')).toBeVisible()
       })
     })
-  })
+    describe('and several notes exists', () => {
+      beforeEach(async ({ page }) => {
+        await createNote(page, 'first note')
+        await createNote(page, 'second note')
+        await createNote(page, 'third note')
+      })
+
+      test('one of those can be made non-important', async ({ page }) => {
+        const otherNoteText = page.getByText('second note')
+        const otherNoteElement = otherNoteText.locator('..')
+
+        await otherNoteElement.getByRole('button', { name: 'make not important' }).click()
+        await expect(otherNoteElement.getByText('make important')).toBeVisible()
+      })
+    })
+  })  
 })
