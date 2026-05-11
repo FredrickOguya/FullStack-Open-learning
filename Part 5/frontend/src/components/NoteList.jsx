@@ -7,21 +7,17 @@ import LoginForm from './LoginForm'
 import Footer from './Footer'
 import Notification from './Notification'
 import Note from './Note'
+import { Link } from 'react-router-dom'
 
-const NoteList = () => {
-const [notes, setNotes] = useState([])
+const NoteList = ({ notes, toggleImportanceOf, setErrorMessage, setNotes}) => {
+
   const [showAll, setShowAll] = useState(true)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
   const noteFormRef = useRef()
 
-  useEffect(() => {
-    noteService.getAll().then(initialNotes => {
-      setNotes(initialNotes)
-    })
-  }, [])
+
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
@@ -49,25 +45,7 @@ const [notes, setNotes] = useState([])
     </Togglable>
   )
 
-  const toggleImportanceOf = id => {
-    const note = notes.find(n => n.id === id)
-    const changedNote = { ...note, important: !note.important }
-
-    noteService
-      .update(id, changedNote)
-      .then(returnedNote => {
-        setNotes(notes.map(note => (note.id !== id ? note : returnedNote)))
-      })
-      .catch(() => {
-        setErrorMessage(
-          `Note '${note.content}' was already removed from server`
-        )
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
-        setNotes(notes.filter(n => n.id !== id))
-      })
-  }
+  
 
   const handleLogin = async event => {
     event.preventDefault()
@@ -107,7 +85,7 @@ const [notes, setNotes] = useState([])
 
     <div>
       <h1>Notes</h1>
-      <Notification message={errorMessage}/>
+      
 
       {!user && loginForm()}
       {user && (
@@ -124,11 +102,15 @@ const [notes, setNotes] = useState([])
       </div>
       <ul>
         {notesToShow.map(note => (
-          <Note
-            key={note.id}
-            note={note}
-            toggleImportance={() => toggleImportanceOf(note.id)}
-          />
+          <li key={note.id}>
+            <Link to={`/notes/${note.id}`}>
+              {note.content}
+            </Link>
+
+            <button onClick={() => toggleImportanceOf(note.id)}>
+              make {note.important ? 'not important' : 'important'}
+            </button>
+          </li>
         ))}
       </ul>
       <Footer/>

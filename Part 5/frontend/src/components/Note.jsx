@@ -1,5 +1,11 @@
-const Note = ({ note, toggleImportance }) => {
-  const label = note.important ? 'make not important' : 'make important'
+import { useParams } from "react-router-dom"
+
+const Note = ({ notes, toggleImportance }) => {
+
+  const id = useParams().id
+  const note = notes.find(n => n.id === id)
+
+  const label = note.important ? 'maken not important' : 'make important'
 
   return (
     <li className="note">
