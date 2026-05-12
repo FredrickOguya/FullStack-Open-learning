@@ -67,7 +67,7 @@ const App = () => {
 
   return (
 
-    <Router>
+    <div>
       <div>
         <Notification message={errorMessage}/>
         <Link style = {padding} to="/">home</Link>
@@ -77,7 +77,7 @@ const App = () => {
 
       <Routes>
         <Route path="/notes/:id" element ={
-          <Note notes={notes} toggleImportanceOf={toggleImportanceOf} note={note}/>
+          <Note notes={notes} toggleImportanceOf={toggleImportanceOf} note={note} deleteNote={deleteNote}/>
         }/>
         <Route path="/notes" element={
           <NoteList
@@ -93,7 +93,7 @@ const App = () => {
         }/>
         <Route path="/" element={<Home/>} />
       </Routes>
-    </Router>
+    </div>
   )
 }
 
