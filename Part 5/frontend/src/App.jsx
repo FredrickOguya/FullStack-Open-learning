@@ -23,6 +23,12 @@ const App = () => {
     })
   }, [])
 
+  const deleteNote = (id) => {
+    noteService.remove(id).then(() => {
+      setNotes(notes.filter(n => n.id !== id))
+    })
+  }
+
   const toggleImportanceOf = id => {
       const note = notes.find(n => n.id === id)
       const changedNote = { ...note, important: !note.important }
@@ -74,6 +80,7 @@ const App = () => {
            toggleImportanceOf={toggleImportanceOf}
            setErrorMessage={setErrorMessage}
            setNotes={setNotes}
+           deleteNote={deleteNote}
           />
         }/>
         <Route path="/create" element={
