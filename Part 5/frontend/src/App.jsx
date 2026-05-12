@@ -8,7 +8,8 @@ import Togglable from './components/Togglable'
 import NoteForm from './components/NoteForm'
 import {
   BrowserRouter as Router,
-  Routes, Route, Link
+  Routes, Route, Link,
+  useMatch
 } from 'react-router-dom'
 import NoteList from './components/NoteList'
 import Home from './components/Home'
@@ -59,6 +60,10 @@ const App = () => {
     padding: 5
   }
 
+  const match = useMatch('/notes/:id')
+  const note = match ? notes.find(note => note.id === match.params.id)
+  : null
+
 
   return (
 
@@ -72,7 +77,7 @@ const App = () => {
 
       <Routes>
         <Route path="/notes/:id" element ={
-          <Note notes={notes} toggleImportanceOf={toggleImportanceOf} />
+          <Note notes={notes} toggleImportanceOf={toggleImportanceOf} note={note}/>
         }/>
         <Route path="/notes" element={
           <NoteList

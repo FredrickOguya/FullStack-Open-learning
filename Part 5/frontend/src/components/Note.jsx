@@ -1,10 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom"
 
-const Note = ({ notes, toggleImportance , deleteNote }) => {
+const Note = ({ note, toggleImportance , deleteNote }) => {
 
-  const navigate = useNavigate()
   const id = useParams().id
-  const note = notes.find(n => n.id === id)
+  const navigate = useNavigate()
+
+  if(!note) {
+    return null
+  }
 
   const label = note.important ? 'maken not important' : 'make important'
 
