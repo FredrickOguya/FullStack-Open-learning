@@ -6,6 +6,7 @@ import noteService from './services/notes'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import NoteForm from './components/NoteForm'
+import { Container } from '@mui/material'
 import {
   BrowserRouter as Router,
   Routes, Route, Link,
@@ -67,13 +68,14 @@ const App = () => {
 
   return (
 
-    <div>
+    <Container>
       <div>
-        <Notification message={errorMessage}/>
-        <Link style = {padding} to="/">home</Link>
-        <Link style={padding} to="/notes">notes</Link>
-        <Link style={padding} to="/create">new note</Link>
-      </div>
+        <div>
+          <Notification message={errorMessage}/>
+          <Link style = {padding} to="/">home</Link>
+          <Link style={padding} to="/notes">notes</Link>
+          <Link style={padding} to="/create">new note</Link>
+        </div>
 
       <Routes>
         <Route path="/notes/:id" element ={
@@ -94,6 +96,8 @@ const App = () => {
         <Route path="/" element={<Home/>} />
       </Routes>
     </div>
+    </Container>
+    
   )
 }
 
