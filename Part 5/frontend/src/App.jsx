@@ -5,7 +5,7 @@ import Notification from './components/Notification'
 import noteService from './services/notes'
 import Togglable from './components/Togglable'
 import NoteForm from './components/NoteForm'
-import { Container } from '@mui/material'
+import { AppBar, Button, Container, Toolbar } from '@mui/material'
 import {
   BrowserRouter as Router,
   Routes, Route, Link,
@@ -65,47 +65,45 @@ const App = () => {
     })
   }
 
-  const padding = {
-    padding: 5
-  }
+
 
   const match = useMatch('/notes/:id')
   const note = match ? notes.find(note => note.id === match.params.id)
   : null
 
+  const style = { '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.3)' } }
 
 
   return (
 
     <Container>
-      <div>
-        <div>
-          <Link style = {padding} to="/">home</Link>
-          <Link style={padding} to="/notes">notes</Link>
-          <Link style={padding} to="/create">new note</Link>
-        </div>
+        <AppBar position='static'>
+          <Toolbar>
+            <Button color='inherit' component={Link}  to="/" sx={style}>home</Button>
+            <Button color='inherit' component={Link} to="/notes" sx={style}>notes</Button>
+            <Button color='inherit' component={Link} to="/create" sx={style}>new note</Button>
+          </Toolbar>
+        </AppBar>
 
-          <Notification notification={notification}/>
+        <Notification notification={notification}/>
 
-      <Routes>
-        <Route path="/notes/:id" element ={
-          <Note notes={notes} toggleImportanceOf={toggleImportanceOf} note={note} deleteNote={deleteNote}/>
-        }/>
-        <Route path="/notes" element={
-          <NoteList
-           notes={notes} 
-           toggleImportanceOf={toggleImportanceOf}
-           setNotification={setNotification}
-           setNotes={setNotes}
-           deleteNote={deleteNote}
-          />
-        }/>
-        <Route path="/create" element={
-          <NoteForm createNote={addNote}/>
-        }/>
-        <Route path="/" element={<Home/>} />
+        <Routes>
+          <Route path="/notes/:id" element ={
+            <Note notes={notes} toggleImportanceOf={toggleImportanceOf} note={note} deleteNote={deleteNote}/>
+          }/>
+          <Route path="/notes" element={
+            <NoteList
+            notes={notes} 
+            toggleImportanceOf={toggleImportanceOf}
+            setNotification={setNotification}
+            deleteNote={deleteNote}
+            />
+          }/>
+          <Route path="/create" element={     
+            <NoteForm createNote={addNote}/>
+          }/>
+          <Route path="/" element={<Home/>} />
       </Routes>
-    </div>
     </Container>
     
   )

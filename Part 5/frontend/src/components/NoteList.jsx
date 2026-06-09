@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import noteService from '../services/notes'
 import NoteForm from './NoteForm'
 import loginService from '../services/login'
@@ -10,13 +10,12 @@ import Note from './Note'
 import { Link } from 'react-router-dom'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
 
-const NoteList = ({ notes, setNotification, setNotes}) => {
+const NoteList = ({ notes, setNotification}) => {
 
   const [showAll, setShowAll] = useState(true)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const noteFormRef = useRef()
 
 
 
@@ -29,22 +28,9 @@ const NoteList = ({ notes, setNotification, setNotes}) => {
     }
   }, [])
 
-  const addNote = (noteObject) => {
-      noteFormRef.current.toggleVisibility()
-      noteService
-      .create(noteObject)
-      .then(returnedNote => {
-      setNotes(notes.concat(returnedNote))
-    })
-  }
 
 
 
-  const noteForm = () => (
-    <Togglable buttonLabel='new note' ref={noteFormRef}>
-      <NoteForm createNote={addNote} />
-    </Togglable>
-  )
 
   
 
@@ -92,7 +78,6 @@ const NoteList = ({ notes, setNotification, setNotes}) => {
       {user && (
         <div>
           <p>{user.name} logged</p>
-          {noteForm()}
         </div>
       )}
       <TableContainer>
