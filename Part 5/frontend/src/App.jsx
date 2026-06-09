@@ -3,7 +3,6 @@ import Footer from './components/Footer'
 import Note from './components/Note'
 import Notification from './components/Notification'
 import noteService from './services/notes'
-import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import NoteForm from './components/NoteForm'
 import { Container } from '@mui/material'
@@ -14,10 +13,10 @@ import {
 } from 'react-router-dom'
 import NoteList from './components/NoteList'
 import Home from './components/Home'
-
+import { Alert } from '@mui/material'
 const App = () => {
   const [notes, setNotes] = useState([])
-    const [errorMessage, setErrorMessage] = useState(null)
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     noteService.getAll().then(initialNotes => {
@@ -41,19 +40,28 @@ const App = () => {
           setNotes(notes.map(note => (note.id !== id ? note : returnedNote)))
         })
         .catch(() => {
-          setErrorMessage(
-            `Note '${note.content}' was already removed from server`
-          )
+          setNotification({
+            text: `Note '${note.content}' was already removed from server`,
+            type: 'error'
+          })
           setTimeout(() => {
-            setErrorMessage(null)
+            setNotification(null)
           }, 5000)
           setNotes(notes.filter(n => n.id !== id))
         })
     }
 
-  const addNote = noteObject => {
+  const addNote = (noteObject) => {
     noteService.create(noteObject).then(returnedNote => {
       setNotes(notes.concat(returnedNote))
+      setNotification({ 
+        text: `Note '${returnedNote.content}' added!`, 
+        type:'success'
+      })
+
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
     })
   }
 
@@ -66,16 +74,18 @@ const App = () => {
   : null
 
 
+
   return (
 
     <Container>
       <div>
         <div>
-          <Notification message={errorMessage}/>
           <Link style = {padding} to="/">home</Link>
           <Link style={padding} to="/notes">notes</Link>
           <Link style={padding} to="/create">new note</Link>
         </div>
+
+          <Notification notification={notification}/>
 
       <Routes>
         <Route path="/notes/:id" element ={
@@ -85,7 +95,7 @@ const App = () => {
           <NoteList
            notes={notes} 
            toggleImportanceOf={toggleImportanceOf}
-           setErrorMessage={setErrorMessage}
+           setNotification={setNotification}
            setNotes={setNotes}
            deleteNote={deleteNote}
           />

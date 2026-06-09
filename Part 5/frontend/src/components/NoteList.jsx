@@ -10,7 +10,7 @@ import Note from './Note'
 import { Link } from 'react-router-dom'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
 
-const NoteList = ({ notes, setErrorMessage, setNotes}) => {
+const NoteList = ({ notes, setNotification, setNotes}) => {
 
   const [showAll, setShowAll] = useState(true)
   const [username, setUsername] = useState('')
@@ -60,9 +60,9 @@ const NoteList = ({ notes, setErrorMessage, setNotes}) => {
       setUsername('')
       setPassword('')
     }catch{
-      setErrorMessage('wrong credentials')
+      setNotification({text: 'wrong credentials', type: 'error' })
       setTimeout(() => {
-        setErrorMessage(null)
+        setNotification(null)
       }, 5000)
     }
   }
