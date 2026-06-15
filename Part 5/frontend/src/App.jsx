@@ -14,6 +14,15 @@ import {
 import NoteList from './components/NoteList'
 import Home from './components/Home'
 import { Alert } from '@mui/material'
+
+
+
+
+
+
+
+
+import styled from 'styled-components'
 const App = () => {
   const [notes, setNotes] = useState([])
   const [notification, setNotification] = useState(null)
@@ -73,16 +82,30 @@ const App = () => {
 
   const style = { '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.3)' } }
 
+  const Page = styled.div`
+    padding: 1em;
+    background: papayawhip;
+    `
+  const Navigation = styled.div`
+    background: BurlyWood;
+    padding: 1em;
+  `
+  const Footer = styled.div`
+    background: Chocolate;
+    padding: 1em;
+    margin-top: 1em;
+  `
+
 
   return (
 
-    <Container>
+    <Page>
         <AppBar position='static'>
-          <Toolbar>
+          <Navigation>
             <Button color='inherit' component={Link}  to="/" sx={style}>home</Button>
             <Button color='inherit' component={Link} to="/notes" sx={style}>notes</Button>
             <Button color='inherit' component={Link} to="/create" sx={style}>new note</Button>
-          </Toolbar>
+          </Navigation>
         </AppBar>
 
         <Notification notification={notification}/>
@@ -104,7 +127,10 @@ const App = () => {
           }/>
           <Route path="/" element={<Home/>} />
       </Routes>
-    </Container>
+      <Footer>
+         Note app, Department of Computer Science, University of Helsinki 2026
+      </Footer>
+    </Page>
     
   )
 }
