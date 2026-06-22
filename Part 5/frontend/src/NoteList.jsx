@@ -3,6 +3,7 @@ import { useNotes } from "./store"
 
 const NoteList = () => {
   const notes = useNotes()
+  
 
   return (
     <ul>
