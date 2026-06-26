@@ -1,28 +1,18 @@
 import { create } from 'zustand'
-
-const initialNotes = [
-  {
-    id: 1,
-    content: 'Zustand is less complex than Redux',
-    important: true,
-  }, {
-    id: 2,
-    content: 'React app benefits from custom hooks',
-    important: false
-  }, {
-    id: 3,
-    content: 'Remember to sleep well',
-    important: true,
-  }
-]
+import noteService from './services/notes'
 
 const useNoteStore = create( set => ({
-  notes: initialNotes,
+  notes: [],
   filter: 'all',
   actions: {
-    add: note => set(
-      state => ({ notes: [...state.notes, note] })
-    ),
+    add: async (content) => {
+      const newNote = await noteService.createNew(content)
+      set(state => ({ notes: state.notes.concat(newNote)}))
+    },
+    initialize: async () => {
+      const notes = await noteService.getAll()
+      set(() => ({ notes }))
+    },
     toggleImportance: id => set(
       state => ({
         notes: state.notes.map(note => 
@@ -30,7 +20,9 @@ const useNoteStore = create( set => ({
         )
       })
     ),
-    setFilter: value => set(() => ({ filter: value }))
+    setFilter: value => set(
+      () => ({ filter: value })
+    )  
   }
 }))
 

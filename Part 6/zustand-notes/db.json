@@ -8,22 +8,32 @@
     {
       "id": "2",
       "content": "React app benefits from custom hooks",
-      "important": false
+      "important": true
     },
     {
       "id": "3",
       "content": "Remember to sleep well",
-      "important": true
+      "important": false
     },
     {
-      "content": "ghgr",
-      "important": false,
-      "id": "Bsehvtsbrtw"
+      "content": "kdflkjfd;lkjle",
+      "important": true,
+      "id": "a3425GpGvTE"
     },
     {
-      "content": "dhgfiuewhyfd",
+      "content": "idsfhoief",
       "important": false,
-      "id": "YXOjTKGF4Jw"
+      "id": "JMl0Ym_HzbE"
+    },
+    {
+      "content": "rerwger",
+      "important": false,
+      "id": "im6kIWiECu8"
+    },
+    {
+      "content": "ghrtg",
+      "important": false,
+      "id": "4Gno2_DyCb8"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

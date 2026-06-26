@@ -1,40 +1,27 @@
-import axios from 'axios'
-const baseUrl = '/api/notes'
-
-let token = null
-
-const setToken =  newToken => {
-  token = `Bearer ${newToken}`
-}
+const baseUrl = 'http://localhost:3001/notes'
 
 const getAll = async () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
-}
+  const response = await fetch(baseUrl)
 
-const create = async newObject => {
-  const config = {
-    headers: { Authorization: token}
+  if (!response.ok) {
+    throw new Error('Failed to fetch notes')
   }
 
-  const response = await axios.post(baseUrl, newObject, config)
-  return response.data
+  
+  return response.json()
 }
 
-const update = async (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject)
-  return request.then(response => response.data)
-}
+const createNew = async (content) => {
+  const response = await fetch(baseUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json'},
+    body: JSON.stringify({ content, important: false})
+  })
 
-const remove = async (id) => {
-  const response = await axios.delete(`${baseUrl}/${id}`)
-  return response.data
-}
+  if(!response.ok) {
+    throw new Error('failed to create note')
+  }
 
-export default {
-  getAll,
-  create,
-  update,
-  setToken,
-  remove
+  return await response.json()
 }
+export default { getAll, createNew }
