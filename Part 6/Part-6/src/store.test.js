@@ -1,6 +1,6 @@
 import { beforeEach, describe,expect,it } from "vitest";
 import useCounterStore, { useCounter, useCounterControls } from "./store";
-import { act, render, renderHook } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
 
 beforeEach(() => {
   useCounterStore.setState({ counter: 0 })
