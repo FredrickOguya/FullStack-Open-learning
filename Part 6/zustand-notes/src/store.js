@@ -1,7 +1,16 @@
 import { create } from 'zustand'
 import noteService from './services/notes'
 
-const useNoteStore = create((set, get) => ({
+const logger = (config) => (set, get) => config(
+  (...args) => {
+    console.log('prev state', get());
+    set(...args);
+    console.log('next stage', get());
+  },
+  get
+)
+
+const useNoteStore = create(logger((set, get) => ({
   notes: [],
   filter: '',
   actions: {
@@ -24,7 +33,7 @@ const useNoteStore = create((set, get) => ({
       set(() => ({notes}))
     }
   }
-}))
+})))
 
 export const useNotes = () => {
   const notes = useNoteStore((state) => state.notes)
