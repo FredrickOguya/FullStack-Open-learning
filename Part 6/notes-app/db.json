@@ -1,19 +1,40 @@
 {
   "notes": [
     {
-      "id": 1,
+      "id": "1",
       "content": "Zustand is less complex than Redux",
-      "important": true
+      "important": false
     },
     {
-      "id": 2,
+      "id": "2",
       "content": "React app benefits from custom hooks",
       "important": false
     },
     {
-      "id": 3,
+      "id": "3",
       "content": "Remember to sleep well",
       "important": true
+    },
+    {
+      "content": "mnknklj",
+      "important": true,
+      "id": "RYr2l-KLzng"
+    },
+    {
+      "content": "Yow rada mzee",
+      "important": true,
+      "id": "gie_zujDqMQ"
+    },
+    {
+      "content": "holla",
+      "important": true,
+      "id": "2kLoF6Sz6qc"
+    },
+    {
+      "content": "hol",
+      "important": true,
+      "id": "qXm5M79EkkQ"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
