@@ -1,8 +1,8 @@
-import { useContext } from "react";
 import CounterContext from "../CounterContext";
+import useCounter from "../hooks/useCounter";
 
 const Controls = () => {
-  const { increment, decrement, zero } = useContext(CounterContext)
+  const { increment, decrement, zero } = useCounter(CounterContext)
 
 
   return (
