@@ -1,16 +1,17 @@
-import Controls from "./Controls";
-import Display from "./Display";
+import { useState } from "react";
+import Panel from "./components/Panel";
+import CounterContext from "./CounterContext";
 
 
 
 const App = () => {
   
+  const [counter, setCounter] = useState(0)
 
   return (
-   <div>
-    <Display/>
-    <Controls/>
-  </div>
+   <CounterContext.Provider value={{counter,setCounter}}>
+    <Panel />
+  </CounterContext.Provider>
   )
 }
 
