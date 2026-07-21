@@ -1,0 +1,12 @@
+{
+  "name": "part-7",
+  "version": "1.0.0",
+  "description": "Part 7 of the full stack open learning",
+  "license": "ISC",
+  "author": "Fredrick Oguya",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  }
+}
