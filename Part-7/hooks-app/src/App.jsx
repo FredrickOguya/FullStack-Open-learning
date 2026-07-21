@@ -1,23 +1,41 @@
 
+import { useState } from 'react'
 import './App.css'
 import { useCounter } from './hooks/useCounter'
 
 function App() {
-  const counter = useCounter()
+  const [name, setName] = useState('')
+  const [born, setBorn] = useState('')
+  const [height, setHeight] = useState('')
   
 
   return (
     <div>
-      <div>{counter.value}</div>
-      <button onClick={counter.increase}>
-        plus
-      </button>
-      <button onClick={counter.decrease}>
-        minus
-      </button>
-      <button onClick={counter.zero}>
-        zero
-      </button>
+      <form>
+        name:
+        <input
+         type="text"
+         value={name}
+         onChange={(event) => setName(event.target.value)}
+        />
+        <br />
+        birthdate:
+        <input
+          type='date'
+          value={born}
+          onChange={(event) => setBorn(event.target.value)}
+        />
+        <br />
+        height:
+        <input
+         type="text" 
+         value={height}
+         onChange={(event) => setHeight(event.target.value)}
+        />
+      </form>
+      <div>
+        {name} {born} {height}
+      </div>
     </div>
   )
 }
