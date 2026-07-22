@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "esbuild src/main.jsx --minify --sourcemap --outfile=dist/main.js --jsx=automatic",
-    "serve": "npx serve dist"
+    "serve": "npx serve dist",
+    "dev": "esbuild src/main.jsx --bundle --outfile=dist/main.js --jsx=automatic --serverdir=./dist --watch"
   },
   "keywords": [],
   "author": "",
