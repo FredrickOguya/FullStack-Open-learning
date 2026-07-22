@@ -1,29 +1,17 @@
 
 import './App.css'
-import useField from './hooks/useField'
+import { useLocalStorage } from './hooks/useLocalStorage'
 
 function App() {
 
  
-  const name = useField('text')
-  const born = useField('date')
-  const height = useField('number')
+  const [name, setName] = useLocalStorage('name', '')
+  
 
   return (
     <div>
-      <form>
-        name:
-        <input {...name}/>
-        <br />
-        birthdate:
-        <input {...born}/>
-        <br />
-        height:
-        <input {...height}/>
-      </form>
-      <div>
-        {name.value} {born.value} {height.value}
-      </div>
+      <input type="text" value={name} onChange={e => setName(e.target.value)} />
+      <p>Hello, {name}! (your name is tored in localStorage)</p>
     </div>
   )
 }
