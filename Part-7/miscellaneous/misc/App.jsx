@@ -10,6 +10,12 @@ class App extends React.Component {
         }
     }
 
+    componentDidMount = () => {
+        axios.get('http://localhost:3001/anecdotes').then(response => {
+            this.setState({ anecdotes: response.data })
+        })
+    }
+
     render() {
         if(this.state.anecdotes.length === 0) {
             return <div>no anecdotes...</div>
