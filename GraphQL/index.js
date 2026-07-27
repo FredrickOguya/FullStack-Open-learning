@@ -50,6 +50,10 @@ const typeDefs =  /* GraphQL */ `
       street: String!
       city: String!
     ): Person
+    editNumber(
+      name: String!
+      phone: String!
+    ): Person
   }
 `
 
@@ -91,6 +95,15 @@ const resolvers = {
       const person = { ...args, id: uuid()}
       persons = persons.concat(person)
       return person
+    },
+    editNumber: (root, args) => {
+      const person = persons.find(p => p.name === args.name)
+      if(!person) {
+        return null
+      }
+      const updatedPerson = {...person, phone: args.phone}
+      person = persons.map(p => p.name === args.name ? updatedPerson : p )
+      return updatedPerson
     }
   }
 }
