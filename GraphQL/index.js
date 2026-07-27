@@ -1,6 +1,8 @@
 const { ApolloServer } = require("@apollo/server")
 const { startStandaloneServer } = require('@apollo/server/standalone')
-let Persons = [
+const { v1: uuid } = require('uuid')
+
+let persons = [
   {
     name: "Arto Hellas",
     phone: "040-1234543",
@@ -15,6 +17,7 @@ let Persons = [
     id: '3d599471-3436-11e9-bc57-8b80ba54c431'
   }
 ]
+
 
 const typeDefs =  /* GraphQL */ `
   type Address {
@@ -32,14 +35,22 @@ const typeDefs =  /* GraphQL */ `
     personCount: Int!
     allPersons: [Person!]!
     findPerson(name: String!): Person
+  },
+  type Mutation {
+    addPerson(
+      name: String!
+      phone: String
+      street: String!
+      city: String!
+    ): Person
   }
 `
 
 const resolvers = {
   Query: {
-    personCount: () => Persons.length,
-    allPersons: () => Persons,
-    findPerson: (root, args) => Persons.find(p => p.name === args.name)
+    personCount: () => persons.length,
+    allPersons: () => persons,
+    findPerson: (root, args) => persons.find(p => p.name === args.name)
   },
   Person: {
     address: ({ street, city }) => {
@@ -47,6 +58,13 @@ const resolvers = {
         street,
         city
       }
+    }
+  },
+  Mutation: {
+    addPerson: (root, args) => {
+      const person = { ...args, id: uuid()}
+      persons = persons.concat(person)
+      return person
     }
   }
 }
