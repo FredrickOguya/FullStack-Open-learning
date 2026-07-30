@@ -66,11 +66,11 @@ const resolvers = {
       if (!args.phone) {
         return persons
       }
-      const byPhone = (person) => {
-        args.phone === 'YES' ? person.phone : !person.phone
-
-        return persons.filter(byPhone)
-      }
+      return persons.filter(person => 
+        args.phone === 'YES'
+        ? person.phone
+        : !person.phone
+      )
     }
   },
   Person: {
@@ -83,7 +83,7 @@ const resolvers = {
   },
   Mutation: {
     addPerson: (root, args) => {
-      if (persons.find(p => p => p.name === args.name))
+      if (persons.find(p => p.name === args.name))
       {
         throw new GraphQLError(`Name must be unique: ${args.name}`, {
           extensions: {
@@ -102,7 +102,7 @@ const resolvers = {
         return null
       }
       const updatedPerson = {...person, phone: args.phone}
-      person = persons.map(p => p.name === args.name ? updatedPerson : p )
+      persons = persons.map(p => p.name === args.name ? updatedPerson : p )
       return updatedPerson
     }
   }
