@@ -3,6 +3,14 @@ const { startStandaloneServer } = require('@apollo/server/standalone')
 const { GraphQLError } = require("graphql/error")
 const { v1: uuid } = require('uuid')
 
+require('dotenv').config()
+
+const startServer = require('./server')
+
+const PORT = process.env.PORT || 4000
+
+startServer(PORT)
+
 let persons = [
   {
     name: "Arto Hellas",
