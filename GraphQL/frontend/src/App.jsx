@@ -15,6 +15,11 @@ const App = () => {
     return <div>loading...</div>
   }
 
+  if(result.error){
+    console.log(result.error)
+    return <div>{result.error.message}</div>
+  }
+
   const notify = (message) => {
     setErrorMessage(message)
     setTimeout(() => {

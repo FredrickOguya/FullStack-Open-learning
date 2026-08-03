@@ -15,6 +15,11 @@ const schema = new mongoose.Schema({
     required: true,
     minLength: 3
   },
+  city: {
+    type: String,
+    required: true,
+    minLength: 2,
+  }
 })
 
 module.exports = mongoose.model('Person', schema)

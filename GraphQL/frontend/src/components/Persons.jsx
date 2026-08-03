@@ -25,6 +25,16 @@ const Persons = ({ persons }) => {
     skip: !nameToSearch
   })
 
+  console.log(result)
+
+  if(result.loading) {
+    return <div>Loading...</div>
+  }
+
+  if(result.error) {
+    return <div>{result.error.message}</div>
+  }
+
   if(nameToSearch && result.data) {
     return (
       <Person
