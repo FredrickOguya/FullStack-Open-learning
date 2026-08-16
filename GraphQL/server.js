@@ -1,11 +1,17 @@
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
 const jwt = require('jsonwebtoken')
+const http = require('http')
+const express = require('express')
+const { ApolloServerPluginDrainHttpServer } = require('@apollo/server/plugin/drainHttpServer')
+const cors = require('cors')
+const { makeExecutableSchema } = require('@graphql-tools/schema')
 
 
 const resolvers = require('./resolvers')
 const typeDefs = require('./schema')
 const User = require('./models/user')
+const { expressMiddleware } = require('@as-integrations/express5')
 
 const getUserFromAuthHeader = async (auth) => {
   if (!auth || !auth.startsWith('Bearer ')) {
@@ -17,22 +23,33 @@ const getUserFromAuthHeader = async (auth) => {
   return User.findById(decodedToken.id).populate('friends')
 }
 
-const startServer = (port) => {
-  const server = new ApolloServer({
-    typeDefs,
-    resolvers
-  })
-  startStandaloneServer(server, {
-    listen: {port},
-    context: async ({ req }) => {
-      const auth = req.headers.authorization
-      const currentUser = await getUserFromAuthHeader(auth)
+const startServer = async (port) => {
+  const app = express()
+  const httpServer = http.createServer(app)
 
-      return { currentUser}
-    }
-  }).then(({ url }) => {
-    console.log(`Server ready at ${url}`)
+  const server = new ApolloServer({
+    schema: makeExecutableSchema({ typeDefs, resolvers }),
+    plugins: [ApolloServerPluginDrainHttpServer({
+      httpServer
+    })]
   })
+
+  await server.start()
+
+  app.use(
+    '/', 
+    cors(),
+    express.json(),
+    expressMiddleware(server, {
+      context: async ({req}) => {
+        const auth = req.headers.authorization
+        const currentUser = await getUserFromAuthHeader(auth)
+        return { currentUser }
+      }
+    })
+  )
+
+  httpServer.listen(port, () => console.log(`Server is now running on http://localhost:${port}`))
 }
 
 module.exports = startServer
