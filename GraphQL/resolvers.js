@@ -1,9 +1,10 @@
 const Person = require("./models/person")
-const { GraphQLError } = require("graphql")
+const { GraphQLError, subscribe } = require("graphql")
 const User = require('./models/user')
+const { PubSub } = require('graphql-subscriptions')
 const jwt = require('jsonwebtoken')
 
-
+const pubsub = new PubSub()
 
 
 const resolvers = {
@@ -49,7 +50,7 @@ const resolvers = {
         throw new GraphQLError(`Name must be unique: ${args.name}`, {
           extensions: {
             code: 'BAD_USER_INPUT',
-            invalidArgs: args.name
+            invalidArgs: args.name,
           },          
         })
       }
@@ -69,6 +70,9 @@ const resolvers = {
           }
         })
       }
+
+      pubsub.publish('PERSON_ADDED', { personAdded: person })
+
       return person
     },
     addAsFriend: async (root, args, { currentUser }) => {
@@ -151,7 +155,12 @@ const resolvers = {
         value: jwt.sign(userForToken, process.env.JWT_SECRET)
       }
     }
-  }
+  },
+  Subscription: {
+    personAdded: {
+      subscribe: () => pubsub.asyncIterableIterator('PERSON_ADDED')
+    },
+  },
 }
 
 module.exports = resolvers

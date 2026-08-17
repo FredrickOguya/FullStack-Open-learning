@@ -33,6 +33,10 @@ type Query {
   me: User
 }
 
+type Subscription {
+  personAdded: Person!
+}
+
 type Mutation {
   addPerson(
     name: String!
