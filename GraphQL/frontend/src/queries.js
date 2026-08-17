@@ -54,6 +54,16 @@ export const CREATE_PERSON = gql`
   ${PERSON_DETAILS}
 `
 
+export const PERSON_ADDED = gql`
+  subscription {
+    personAdded{ 
+      ...PersonDetails
+    }
+  }
+
+  ${PERSON_DETAILS}
+`
+
 export const LOGIN = gql`
   mutation login($username: String!, $password: String!) {
     login(username: $username, password: $password){
