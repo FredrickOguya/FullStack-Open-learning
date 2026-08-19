@@ -8,6 +8,7 @@ type Person {
   name: String!
   phone: String
   address: Address!
+  friendOf: [User!]!
   id: ID!
 }
 
