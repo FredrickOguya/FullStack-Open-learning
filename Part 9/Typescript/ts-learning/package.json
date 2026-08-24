@@ -1,0 +1,11 @@
+{
+  "type": "module",
+  "scripts": {
+    "tsc": "tsc",
+    "multiply": "tsc && tsx multiplier.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "tsx": "^4.19.0"
+  }
+}
