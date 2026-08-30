@@ -9,12 +9,14 @@
   "scripts": {
     "tsc": "tsc",
     "test": "npm test",
-    "dev": "concurrently \"tsc --watch\"\"node --watch index.ts\"",
-    "start": "node index.ts",
+    "dev": "tsx watch --experimental-transform-types index.ts",
+    "start": "node dist/index.js",
     "lint": "eslint ."
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "concurrently": "^10.0.5",
+    "tsx": "^4.23.13",
     "typescript": "^7.0.2"
   },
   "dependencies": {
