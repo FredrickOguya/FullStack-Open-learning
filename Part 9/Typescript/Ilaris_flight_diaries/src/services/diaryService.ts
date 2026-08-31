@@ -1,8 +1,11 @@
-import diaryData from '../../data/entries.json' with { type: "json" };
+import type { DiaryEntry } from '../types.ts';
+import diaries from '../../data/entries.ts';
 
-const getEntries = () => {
-  return diaryData
+
+const getEntries = (): DiaryEntry[] => {
+  return diaries
 }
+
 
 const addDiary = () => {
   return null;
