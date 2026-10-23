@@ -1,6 +1,7 @@
 const router = require('express').Router()
 
 const { Note } = require('../models')
+const { User } = require('../models')
 
 const noteFinder = async (req, res, next) => {
   req.note = await Note.findByPk(req.params.id)
@@ -12,13 +13,18 @@ const noteFinder = async (req, res, next) => {
 
 
 router.get('/', async (req, res) => {
-  const notes = await Note.findAll()
-  res.json(notes)
+  const users = await User.findAll({
+    include: {
+      model: Note
+    }
+  })
+  res.json(users)
 })
 
 router.post('/', async (req, res) => {
   try {
-    const note = await Note.create({... req.body, date: new Date()})
+    const user = await User.findOne()
+    const note = await Note.create({... req.body, date: new Date(), userId: user.id})
     res.json(note)
   } catch(error) {
     return res.status(400).json({ error })
