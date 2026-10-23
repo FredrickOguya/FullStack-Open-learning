@@ -27,12 +27,14 @@ const tokenExtractor = (req, res, next) => {
 }
 
 router.get('/', async (req, res) => {
-  const users = await User.findAll({
+  const notes = await Note.findAll({
+    attributes: { exclude: ['userId'] },
     include: {
-      model: Note
+      model: User,
+      attributes: ['name']
     }
   })
-  res.json(users)
+  res.json(notes)
 })
 
 router.post('/',tokenExtractor, async (req, res) => {
