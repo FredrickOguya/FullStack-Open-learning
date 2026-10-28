@@ -15,10 +15,16 @@ Note.init({
     allowNull: false
   },
   important: {
-    type: DataTypes.BOOLEAN
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
   },
   date: {
     type: DataTypes.DATE
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: { model: 'users', key: 'id' }
   }
 }, {
   sequelize,

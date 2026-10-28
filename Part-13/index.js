@@ -11,8 +11,8 @@ const loginRouter = require('./controllers/login')
 
 app.use(express.json())
 
-app.use('./api/notes', notesRouter)
-app.use('./api/users', usersRouter)
+app.use('/api/notes', notesRouter)
+app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 
 const start = async () => {
