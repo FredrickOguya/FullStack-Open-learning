@@ -1,5 +1,7 @@
 {
   "scripts": {
+    "dev": "node --watch index.js",
+    "migration:down": "node util/rollback.js",
     "start": "node index.js"
   },
   "dependencies": {

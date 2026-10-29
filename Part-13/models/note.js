@@ -1,5 +1,4 @@
 const { Model, DataTypes } = require('sequelize')
-
 const { sequelize } = require('../util/db')
 
 class Note extends Model {}
@@ -16,16 +15,11 @@ Note.init({
   },
   important: {
     type: DataTypes.BOOLEAN,
-    allowNull: false,
+    allowNull: false,    
   },
   date: {
     type: DataTypes.DATE
   },
-  userId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: { model: 'users', key: 'id' }
-  }
 }, {
   sequelize,
   underscored: true,
