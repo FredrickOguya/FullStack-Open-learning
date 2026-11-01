@@ -1,4 +1,4 @@
-import { getNotes } from "./Services/notes"
+import { getNotes } from "./services/notes"
 
 const Notes = () => {
   const notes = getNotes()
