@@ -19,3 +19,7 @@ export const addNote = (content: string, important: boolean) => {
     content, important
   })
 }
+
+export const getNoteById = (id: number) => {
+  return notes.find((note) => note.id === id)
+}

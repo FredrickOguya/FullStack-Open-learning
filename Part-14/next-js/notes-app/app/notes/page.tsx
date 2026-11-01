@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 const notes = [
   { id: 1, content: "next.js utilizes React Server Components", important: true },
   { id: 2, content: "next.js is built on top of React", important: true },
@@ -15,7 +17,8 @@ const Notes = () => {
       <ul>
         {notes.map(note => (
           <li key={note.id}>
-            {note.content} {note.important && <strong>(important)</strong>}
+            <Link href={`/notes/${note.id}`}>{note.content}</Link>
+            {note.important && <strong>(important)</strong>}
           </li>
         ))}
       </ul>
