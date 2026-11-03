@@ -1,6 +1,8 @@
 import Link from "next/link"
 import AuthSessionProvider from "./components/SessionProvider"
 import Navbar from "./components/NavBar"
+import Notification from "./components/Notification"
+import { NotificationProvider } from "./components/NotificationContext"
 
 export default function RootLayout({
   children,
@@ -11,8 +13,12 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AuthSessionProvider>
-          <Navbar />
-          {children}
+          <NotificationProvider>
+            <Navbar />
+            <Notification />
+            {children}            
+          </NotificationProvider>
+
         </AuthSessionProvider>
       </body>
     </html>
