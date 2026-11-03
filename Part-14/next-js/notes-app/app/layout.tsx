@@ -1,4 +1,4 @@
-import Link from "next/link"
+import "./globals.css"
 import AuthSessionProvider from "./components/SessionProvider"
 import Navbar from "./components/NavBar"
 import Notification from "./components/Notification"
@@ -11,14 +11,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="min-h-screen bg-background text-foreground">
         <AuthSessionProvider>
           <NotificationProvider>
             <Navbar />
             <Notification />
             {children}            
           </NotificationProvider>
-
         </AuthSessionProvider>
       </body>
     </html>
