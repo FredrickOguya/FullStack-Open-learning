@@ -1,6 +1,6 @@
-import { eq, sql } from "drizzle-orm"
+import { eq } from "drizzle-orm"
 import { db } from "../../db"
-import { notes, users } from "../../db/schema"
+import { notes } from "../../db/schema"
 import { getCurrentUser } from "./session"
 
 export const getNotes = async (importantOnly: boolean) => {
