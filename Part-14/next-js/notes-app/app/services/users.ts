@@ -1,38 +1,30 @@
-import { eq } from "drizzle-orm"
+import { eq, sql } from "drizzle-orm"
 import { db } from "../../db"
-import { notes } from "../../db/schema"
-import { getCurrentUser } from "./session"
+import { users, notes } from "../../db/schema"
 
-export const getNotes = async (importantOnly: boolean) => {
-  if (importantOnly) {
-    return db.query.notes.findMany({
-      where: eq(notes.important, true),
-    })
-  }
-  return db.query.notes.findMany()
+export const getUsers = async () => {
+  return db.select().from(users)
 }
 
-export const getNoteById = async (id: number) => {
-  return db.query.notes.findFirst({
-    where: eq(notes.id, id),
+export const getUserWithNotes = async (id: number) => {
+  return db.query.users.findFirst({
+    where: eq(users.id, id),
+    with: { notes: true },
   })
 }
 
+export const getNotesByUserId = async (userId: number) => {
+  return db.select().from(notes).where(eq(notes.userId, userId))
+}
+
 export const addNote = async (content: string, important: boolean) => {
-  const user = await getCurrentUser()
+  const user = await db.query.users.findFirst({
+    orderBy: sql`RANDOM()`,
+  })
+
   if (!user) {
-    throw new Error("Not logged in")
+    throw new Error("No users found")
   }
 
   await db.insert(notes).values({ content, important, userId: user.id })
-}
-
-export const toggleImportance = async (id: number) => {
-  const note = await getNoteById(id)
-  if (note) {
-    await db
-      .update(notes)
-      .set({ important: !note.important })
-      .where(eq(notes.id, id))
-  }
 }

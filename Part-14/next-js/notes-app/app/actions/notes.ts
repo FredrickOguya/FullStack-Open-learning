@@ -11,6 +11,9 @@ export const createNote = async (formData: FormData) => {
     redirect("/login")
   }
   const content = formData.get("content") as string
+  if(!content || content.length < 10) {
+    throw new Error("Note content must be at least 10 characters long")
+  }
   const important = formData.get("important") === "on"
   await addNote(content, important)
 

@@ -8,7 +8,7 @@ const NewNote = () => {
         <div>
           <label>
             Content
-            <input type="text" name="content" required />
+            <input type="text" name="content" required minLength={10}/>
           </label>
         </div>
         <div>
